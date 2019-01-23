@@ -38,6 +38,18 @@ class UtilisateurController extends AbstractController
         $utilisateur->setNom($data["nom"]);
         $utilisateur->setPrenom($data["prenom"]);
         $utilisateur->setNaissance($naissance);
+        $utilisateur->setTelephone1(
+            isset($data["telephone1"]) ? $data["telephone1"] : 0
+        );
+        $telephone1 = $utilisateur->getTelephone1();
+        $utilisateur->setTelephone2(
+            isset($data["telephone2"]) ? $data["telephone2"] : 0
+        );
+        $telephone2 = $utilisateur->getTelephone2();
+        $utilisateur->setTelephone3(
+            isset($data["telephone3"]) ? $data["telephone3"] : 0
+        );
+        $telephone3 = $utilisateur->getTelephone3();
 
         // Avant d'insérer un nouvel utilisateur dans la base de données
         // on vérifie que le nom d'utilisateur est unique.
