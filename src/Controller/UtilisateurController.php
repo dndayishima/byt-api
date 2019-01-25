@@ -149,6 +149,7 @@ class UtilisateurController extends AbstractController
             $response["telephone3"] = ($utilisateur->getTelephone3() === NULL ? 0 : $utilisateur->getTelephone3());
 
         }
+        
         return new JsonResponse($response);
     }
 }
