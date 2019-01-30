@@ -104,4 +104,31 @@ class EvenementController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * @Route("/evenement/{vendeur}", name="evenement_vendeur")
+     * vendeur c'est le nom public du vendeur.
+     * Si la route est du type /evenement/utilisateur => c'est à dire qu'on va lister tous les événements. nécessaire pour l'interface de l'utilisateur
+     * Requête de type GET
+     * Ensemble d'événements pour un vendeur donné. 
+     * Ne retourne pas les événements qui sont dans le passé
+     * Se réfère à la date du jour pour retourner les événements
+     * @return array evenements
+     */
+    public function getEvenements($vendeur) {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $now = new DateTime();
+        $date_ref_str = date_format($now, "Y-m-d");
+
+        $query = "SELECT * FROM evenement WHERE date >= '$date_ref_str' AND vendeur = '$vendeur'";
+        if ($vendeur == "utilisateur") {
+            $query = "SELECT * FROM evenement WHERE date >= '$date_ref_str'";
+        }
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute();
+        $resultats = $statement->fetchAll();
+
+        return new JsonResponse($resultats);
+    }
 }
