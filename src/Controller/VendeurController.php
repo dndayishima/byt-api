@@ -109,7 +109,7 @@ class VendeurController extends AbstractController
     }
 
     /**
-     * @Route("/vendeur/{nomPublic}/{password}", name="connexion_vendeur")
+     * @Route("/vendeur/connexion/{nomPublic}/{password}", name="connexion_vendeur")
      * Connexion d'un vendeur
      * Requête de type GET 
      * @return Vendeur
@@ -133,6 +133,31 @@ class VendeurController extends AbstractController
             $response["telephone2"] = ($vendeur->getTelephone2() === NULL ? 0 : $vendeur->getTelephone2());
             $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
 
+        }
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @Route("/vendeur/get/{nomPublic}", name="get_vendeur_by_name")
+     * Information d'un vendeur à partir de son nomPublic
+     * Requête de type GET
+     * @return vendeur
+     */
+    public function getVendeurByName($nomPublic) {
+        $repository = $this->getDoctrine()->getRepository(Vendeur::class);
+        $vendeur = $repository->findOneby([
+            "nomPublic" => $nomPublic
+        ]);
+        $response = array();
+        if ($vendeur !== NULL) {
+            $response["id"] = $vendeur->getId();
+            $response["nomPublic"] = $vendeur->getNomPublic();
+            $response["nom"] = $vendeur->getNom();
+            $response["prenom"] = $vendeur->getPrenom();
+            
+            $response["telephone1"] = ($vendeur->getTelephone1() === NULL ? 0 : $vendeur->getTelephone1());
+            $response["telephone2"] = ($vendeur->getTelephone2() === NULL ? 0 : $vendeur->getTelephone2());
+            $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
         }
         return new JsonResponse($response);
     }
