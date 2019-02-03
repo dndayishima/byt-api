@@ -58,6 +58,11 @@ class Ticket
      */
     private $dateEvenement;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $valide;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +160,18 @@ class Ticket
     public function setDateEvenement(\DateTimeInterface $dateEvenement): self
     {
         $this->dateEvenement = $dateEvenement;
+
+        return $this;
+    }
+
+    public function getValide(): ?bool
+    {
+        return $this->valide;
+    }
+
+    public function setValide(bool $valide): self
+    {
+        $this->valide = $valide;
 
         return $this;
     }

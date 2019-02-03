@@ -33,7 +33,9 @@ class TicketController extends AbstractController
         $result = array();
         if (!$this->valideTicket($data)) {
             $result["message"] = "Un champ important n'est pas renseigné dans les données !";
-            return new JsonResponse($result, 419);
+            $response = new JsonResponse($result, 419);
+            $response->headers->set("Access-Control-Allow-Origin", "*");
+            return $response;
         } else {
             $ticket = new Ticket();
             $ticket->setClient($data["client"]);
@@ -46,6 +48,7 @@ class TicketController extends AbstractController
             $ticket->setDateAchat($dateAchat);
             $dateEvenement = new DateTime($data["dateEvenement"]);
             $ticket->setDateEvenement($dateEvenement);
+            $ticket->setValide(true);
 
             $entityManager->persist($ticket);
             $entityManager->flush();
@@ -76,8 +79,10 @@ class TicketController extends AbstractController
             $result["evenementId"] = $ticket->getEvenementId();
             $result["dateAchat"] = $ticket->getDateAchat()->format("Y-m-d");
             $result["dateEvenement"] = $ticket->getDateEvenement()->format("Y-m-d");
-        }      
-        return new JsonResponse($result);
+        }
+        $response = new JsonResponse($result);
+        $response->headers->set("Access-Control-Allow-Origin", "*");
+        return $response;
     }
 
     /**
@@ -115,9 +120,40 @@ class TicketController extends AbstractController
             "dateEvenement" => $dateEvenement
         ]);
         if ($ticket === NULL) {
-            return new JsonResponse(false);
+            $response = new JsonResponse(false);
         } else {
-            return new JsonResponse(true);
+            $response = new JsonResponse(true);
         }
+        $response->headers->set("Access-Control-Allow-Origin", "*");
+        return $response;
+    }
+
+    /**
+     * @Route("/findtickets/{client}", name="findtickets")
+     * Requête de type GET
+     * @return array tickets
+     */
+    public function findTickets($client) {
+        $repository = $this->getDoctrine()->getRepository(Ticket::class);
+        $tickets = $repository->findBy([
+            "client" => $client
+        ]);
+        $result = array();
+        foreach ($tickets as $ticket) {
+            $t["id"] = $ticket->getId();
+            $t["client"] = $ticket->getClient();
+            $t["vendeur"] = $ticket->getVendeur();
+            $t["numClient"] = $ticket->getNumClient();
+            $t["numVendeur"] = $ticket->getNumVendeur();
+            $t["prix"] = $ticket->getPrix();
+            $t["evenementId"] = $ticket->getEvenementId();
+            $t["dateAchat"] = $ticket->getDateAchat()->format("Y-m-d");
+            $t["dateEvenement"] = $ticket->getDateEvenement()->format("Y-m-d");
+            $t["valide"] = $ticket->getValide();
+            array_push($result, $t);
+        }
+        $response = new JsonResponse($result);
+        $response->headers->set("Access-Control-Allow-Origin", "*");
+        return $response;
     }
 }

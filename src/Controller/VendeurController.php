@@ -79,6 +79,7 @@ class VendeurController extends AbstractController
             $response = new JsonResponse($result, 419);
         }
 
+        $response->headers->set("Access-Control-Allow-Origin", "*");
         return $response;
     }
 
@@ -105,7 +106,9 @@ class VendeurController extends AbstractController
             $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
 
         }
-        return new JsonResponse($response);
+        $result = new JsonResponse($response);
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        return $result;
     }
 
     /**
@@ -134,7 +137,9 @@ class VendeurController extends AbstractController
             $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
 
         }
-        return new JsonResponse($response);
+        $result = new JsonResponse($response);
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        return $result;
     }
 
     /**
@@ -159,6 +164,8 @@ class VendeurController extends AbstractController
             $response["telephone2"] = ($vendeur->getTelephone2() === NULL ? 0 : $vendeur->getTelephone2());
             $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
         }
-        return new JsonResponse($response);
+        $result = new JsonResponse($response);
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        return $result;
     }
 }

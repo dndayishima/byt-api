@@ -85,6 +85,7 @@ class UtilisateurController extends AbstractController
             $response = new JsonResponse($result, 419);
         }
 
+        $response->headers->set("Access-Control-Allow-Origin", "*");
         return $response;
     }
 
@@ -115,7 +116,9 @@ class UtilisateurController extends AbstractController
             $response["telephone3"] = ($utilisateur->getTelephone3() === NULL ? 0 : $utilisateur->getTelephone3());
 
         }
-        return new JsonResponse($response);
+        $result = new JsonResponse($response);
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        return $result;
     }
 
 
@@ -150,6 +153,8 @@ class UtilisateurController extends AbstractController
 
         }
         
-        return new JsonResponse($response);
+        $result = new JsonResponse($response);
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        return $result;
     }
 }

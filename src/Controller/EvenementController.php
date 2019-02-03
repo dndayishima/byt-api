@@ -12,13 +12,6 @@ use App\Entity\Evenement;
 
 use \DateTime;
 
-/**
- * TODO : 
- * 1) Fonction qui retourne la liste des évemenents créés par un vendeur donné
- * 2) Get evenement by ID
- * 3) Get evenements après une date donnée
- */
-
 class EvenementController extends AbstractController
 {
     /**
@@ -64,6 +57,7 @@ class EvenementController extends AbstractController
         if ($date < $now) {
             $result["message"] = "La date est dans le passé";
             $response = new JsonResponse($result, 419);
+            $response->headers->set("Access-Control-Allow-Origin", "*");
             return $response;
         }
 
@@ -101,7 +95,7 @@ class EvenementController extends AbstractController
             $response = new JsonResponse($result, 419);
         }
 
-
+        $response->headers->set("Access-Control-Allow-Origin", "*");
         return $response;
     }
 
@@ -129,6 +123,31 @@ class EvenementController extends AbstractController
         $statement->execute();
         $resultats = $statement->fetchAll();
 
-        return new JsonResponse($resultats);
+        $response = new JsonResponse($resultats);
+        $response->headers->set("Access-Control-Allow-Origin", "*");
+        return $response;
+    }
+
+    /**
+     * @Route("/getevenement/{id}", name="get_evenement_by_id")
+     * Requête de type GET
+     * @return evenement
+     */
+    public function getEvenementById($id) {
+        $repository = $this->getDoctrine()->getRepository(Evenement::class);
+        $evenement = $repository->find($id);
+        $result = array();
+        if ($evenement !== NULL) {
+            $result["id"] = $evenement->getId();
+            $result["nom"] = $evenement->getNom();
+            $result["description"] = $evenement->getDescription();
+            $result["type"] = $evenement->getType();
+            $result["date"] = $evenement->getDate()->format("Y-m-d");
+            $result["prixTicket"] = $evenement->getPrixTicket();
+            $result["vendeur"] = $evenement->getVendeur();
+        }
+        $result = new JsonResponse($result);
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        return $result;
     }
 }

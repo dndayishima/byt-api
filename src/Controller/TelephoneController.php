@@ -27,7 +27,9 @@ class TelephoneController extends AbstractController
             $response["num"] = $telephone->getNum();
             $response["credit"] = $telephone->getCredit();
         }
-        return new JsonResponse($response);
+        $result = new JsonResponse($response);
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        return $result;
     }
 
     /**
@@ -61,6 +63,8 @@ class TelephoneController extends AbstractController
         $entityManager->persist($dest);
         $entityManager->flush();
 
-        return new JsonResponse(true);
+        $response = new JsonResponse(true);
+        $response->headers->set("Access-Control-Allow-Origin", "*");
+        return $response;
     }
 }
