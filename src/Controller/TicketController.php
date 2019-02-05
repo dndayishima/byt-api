@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -33,9 +32,7 @@ class TicketController extends AbstractController
         $result = array();
         if (!$this->valideTicket($data)) {
             $result["message"] = "Un champ important n'est pas renseigné dans les données !";
-            $response = new JsonResponse($result, 419);
-            $response->headers->set("Access-Control-Allow-Origin", "*");
-            return $response;
+            return new JsonResponse($result, 419);
         } else {
             $ticket = new Ticket();
             $ticket->setClient($data["client"]);
@@ -80,9 +77,7 @@ class TicketController extends AbstractController
             $result["dateAchat"] = $ticket->getDateAchat()->format("Y-m-d");
             $result["dateEvenement"] = $ticket->getDateEvenement()->format("Y-m-d");
         }
-        $response = new JsonResponse($result);
-        $response->headers->set("Access-Control-Allow-Origin", "*");
-        return $response;
+        return new JsonResponse($result);
     }
 
     /**
@@ -124,7 +119,6 @@ class TicketController extends AbstractController
         } else {
             $response = new JsonResponse(true);
         }
-        $response->headers->set("Access-Control-Allow-Origin", "*");
         return $response;
     }
 
@@ -152,8 +146,6 @@ class TicketController extends AbstractController
             $t["valide"] = $ticket->getValide();
             array_push($result, $t);
         }
-        $response = new JsonResponse($result);
-        $response->headers->set("Access-Control-Allow-Origin", "*");
-        return $response;
+        return new JsonResponse($result);
     }
 }

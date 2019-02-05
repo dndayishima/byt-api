@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -79,7 +78,6 @@ class VendeurController extends AbstractController
             $response = new JsonResponse($result, 419);
         }
 
-        $response->headers->set("Access-Control-Allow-Origin", "*");
         return $response;
     }
 
@@ -106,9 +104,7 @@ class VendeurController extends AbstractController
             $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
 
         }
-        $result = new JsonResponse($response);
-        $result->headers->set("Access-Control-Allow-Origin", "*");
-        return $result;
+        return new JsonResponse($response);
     }
 
     /**
@@ -137,9 +133,7 @@ class VendeurController extends AbstractController
             $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
 
         }
-        $result = new JsonResponse($response);
-        $result->headers->set("Access-Control-Allow-Origin", "*");
-        return $result;
+        return new JsonResponse($response);
     }
 
     /**
@@ -164,8 +158,6 @@ class VendeurController extends AbstractController
             $response["telephone2"] = ($vendeur->getTelephone2() === NULL ? 0 : $vendeur->getTelephone2());
             $response["telephone3"] = ($vendeur->getTelephone3() === NULL ? 0 : $vendeur->getTelephone3());
         }
-        $result = new JsonResponse($response);
-        $result->headers->set("Access-Control-Allow-Origin", "*");
-        return $result;
+        return new JsonResponse($response);
     }
 }

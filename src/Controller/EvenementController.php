@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -56,9 +55,7 @@ class EvenementController extends AbstractController
         // Si évenement est dans le passé
         if ($date < $now) {
             $result["message"] = "La date est dans le passé";
-            $response = new JsonResponse($result, 419);
-            $response->headers->set("Access-Control-Allow-Origin", "*");
-            return $response;
+            return new JsonResponse($result, 419);
         }
 
         // On vérifie si l'évenement qu'on veut créer n'existe pas déjà
@@ -94,8 +91,6 @@ class EvenementController extends AbstractController
             $result["message"] = "Cet évenement existe déjà";
             $response = new JsonResponse($result, 419);
         }
-
-        $response->headers->set("Access-Control-Allow-Origin", "*");
         return $response;
     }
 
@@ -123,9 +118,7 @@ class EvenementController extends AbstractController
         $statement->execute();
         $resultats = $statement->fetchAll();
 
-        $response = new JsonResponse($resultats);
-        $response->headers->set("Access-Control-Allow-Origin", "*");
-        return $response;
+        return new JsonResponse($resultats);
     }
 
     /**
@@ -146,8 +139,6 @@ class EvenementController extends AbstractController
             $result["prixTicket"] = $evenement->getPrixTicket();
             $result["vendeur"] = $evenement->getVendeur();
         }
-        $result = new JsonResponse($result);
-        $result->headers->set("Access-Control-Allow-Origin", "*");
-        return $result;
+        return new JsonResponse($result);
     }
 }

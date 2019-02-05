@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-//use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -27,9 +26,7 @@ class TelephoneController extends AbstractController
             $response["num"] = $telephone->getNum();
             $response["credit"] = $telephone->getCredit();
         }
-        $result = new JsonResponse($response);
-        $result->headers->set("Access-Control-Allow-Origin", "*");
-        return $result;
+        return new JsonResponse($response);
     }
 
     /**
@@ -63,8 +60,6 @@ class TelephoneController extends AbstractController
         $entityManager->persist($dest);
         $entityManager->flush();
 
-        $response = new JsonResponse(true);
-        $response->headers->set("Access-Control-Allow-Origin", "*");
-        return $response;
+        return new JsonResponse(true);
     }
 }
